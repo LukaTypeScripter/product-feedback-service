@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeepPartial, Repository } from 'typeorm';
 import { User } from '../../users.service';
@@ -22,18 +22,26 @@ export class CommentService {
     const user = await this.userRepository.findOne({
       where: { userId: createCommentDto.userId },
     });
-    const post = await this.postRepository.findOne({
-      where: { id: createCommentDto.postId },
-    });
-    const comment = this.commentRepository.create({
-      ...createCommentDto,
-      userId: user.userId,
-      postId: post.id,
-    } as DeepPartial<Comment>);
-    return this.commentRepository.save(comment);
-  }
+    if (!user) {
+      throw new NotFoundException(
+        `User with ID ${createCommentDto.userId} not found`,
+      );
+    }
 
-  async findAll(): Promise<Comment[]> {
-    return this.commentRepository.find({ relations: ['user', 'post'] });
+    const post = await this.postRepository.findOne({
+      where: { postId: createCommentDto.postId },
+    });
+    if (!post) {
+      throw new NotFoundException(
+        `Post with ID ${createCommentDto.postId} not found`,
+      );
+    }
+    const comment = this.commentRepository.create({
+      content: createCommentDto.content,
+      user,
+      post,
+    });
+
+    return this.commentRepository.save(comment);
   }
 }

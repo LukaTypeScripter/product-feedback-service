@@ -8,7 +8,7 @@ import { User } from '../users.service';
 @Entity()
 export class Post {
   @PrimaryGeneratedColumn()
-  id: number;
+  postId: number;
 
   @Column()
   title: string;

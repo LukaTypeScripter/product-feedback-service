@@ -44,8 +44,8 @@ export class AuthService {
 
   async getAllUser(): Promise<User[]> {
     return this.userRepository.find({
-      select: ['userId', 'username'],
-      relations: ['posts', 'comments'],
+      select: ['userId', 'username', 'image'],
+      relations: ['posts', 'posts.comments',],
     });
   }
     async encryptPassword(password: string): Promise<string> {
@@ -53,6 +53,4 @@ export class AuthService {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         return hashedPassword;
     }
-
-
 }

@@ -6,7 +6,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { CommentService } from "../services/comment/comment.service";
 @Controller('comment')
 export class CommentController {
-    constructor(private readonly commentService: CommentService) {}
+  constructor(private readonly commentService: CommentService) {}
   @Post()
   create(@Body() createCommentDto: CreateCommentDto) {
     return this.commentService.createComment(createCommentDto);

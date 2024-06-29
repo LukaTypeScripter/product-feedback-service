@@ -16,6 +16,6 @@ export class Comment {
   @ManyToOne(() => UserEntity, user => user.comments)
   user: User;
 
-  @ManyToOne(() => Post, post => post.comments)
+  @ManyToOne(() => Post, post => post.comments, { nullable: true })
   post: Post;
 }
