@@ -27,7 +27,6 @@ export class CommentService {
         `User with ID ${createCommentDto.userId} not found`,
       );
     }
-
     const post = await this.postRepository.findOne({
       where: { postId: createCommentDto.postId },
     });

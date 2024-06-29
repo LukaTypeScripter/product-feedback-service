@@ -2,6 +2,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Post } from './user-entity/post.entity';
 import { Comment } from './user-entity/comment.entity';
+
 @Entity()
 export class UserEntity {
   @PrimaryGeneratedColumn()
