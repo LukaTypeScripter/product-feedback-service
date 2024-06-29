@@ -1,13 +1,14 @@
 /* eslint-disable prettier/prettier */
-import { Module } from '@nestjs/common';
+import { Module, Post } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './auth/auth.guard';
+import { PostController } from './users/post/post.controller';
+import { CommentController } from './users/comment/comment.controller';
+
 
 @Module({
   imports: [
@@ -21,12 +22,7 @@ import { AuthGuard } from './auth/auth.guard';
     AuthModule,
     UsersModule,
   ],
-  controllers: [AppController],
-  providers: [AppService,
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
-    },
+  providers: [AppService
   ],
 })
 export class AppModule {

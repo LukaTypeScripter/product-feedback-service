@@ -29,17 +29,19 @@ export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
         const request = context.switchToHttp().getRequest();
         const token = this.extractTokenFromHeader(request);
         if (!token) {
-        //   throw new UnauthorizedException();
+          throw new UnauthorizedException();
         }
         try {
           const payload = await this.jwtService.verifyAsync(token, {
-            secret: process.env.JWT_KEY
+              secret: process.env.JWT_KEY
           });
-   
+          
           request['user'] = payload;
-        } catch {
-        //   throw new UnauthorizedException();
-        }
+          console.log(request['user'], "token laaa");
+      } catch (error) {
+          console.error("Error verifying JWT token:", error.message);
+          throw new UnauthorizedException();
+      }
         return true;
       }
   
