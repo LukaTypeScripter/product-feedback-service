@@ -13,7 +13,7 @@ export class UserEntity {
   @Column()
   password: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   image: string;
 
   @OneToMany(() => Post, post => post.user)

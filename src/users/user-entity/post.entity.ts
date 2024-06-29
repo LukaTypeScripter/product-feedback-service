@@ -16,19 +16,19 @@ export class Post {
   @Column()
   category: string;
 
-  @Column()
+  @Column({ default: 0 })
   upvotes: number;
 
-  @Column()
+  @Column({ default: false })
   upvoted: boolean;
 
-  @Column()
+  @Column({ default: 'suggestion' })
   status: string;
 
   @Column()
   description: string;
 
-  @ManyToOne(() => UserEntity, user => user.posts)
+  @ManyToOne(() => UserEntity, user => user.posts, { nullable: false })
   user: User;
 
   @OneToMany(() => Comment, comment => comment.post)

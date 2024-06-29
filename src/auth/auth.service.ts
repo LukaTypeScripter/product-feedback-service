@@ -15,8 +15,6 @@ export class AuthService {
         private usersService: UsersService,
         private jwtService: JwtService,
         @InjectRepository(UserEntity) private userRepository: Repository<any>,
-        @InjectRepository(Post) private postRepository: Repository<any>,
-        @InjectRepository(Comment) private commentRepository: Repository<any>,
       ) {}
     
       async signIn(
@@ -38,29 +36,23 @@ export class AuthService {
         };
       }
 
-      async createUser(userData: User): Promise<UserEntity> {
+      async createUser(userData: User): Promise<any[]> {
         userData.password = await this.encryptPassword(userData.password);
         const newUser = this.userRepository.create(userData);
         return this.userRepository.save(newUser);
     }
-    
-    async getAllUser(): Promise<UserEntity[]> {
-        return this.userRepository.find({ select: ["userId", "username"] });
-    }
+
+  async getAllUser(): Promise<User[]> {
+    return this.userRepository.find({
+      select: ['userId', 'username'],
+      relations: ['posts', 'comments'],
+    });
+  }
     async encryptPassword(password: string): Promise<string> {
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         return hashedPassword;
     }
-    async createPost(createPostDto: CreatePostDto, userId: number): Promise<typeof Post> {
-      const user = await this.userRepository.findOne({ where: { userId } });
-      const post = this.postRepository.create({ ...createPostDto, user });
-      return this.postRepository.save(post);
-    }
-    async createComment(createCommentDto: CreateCommentDto): Promise<Comment> {
-      const user = await this.userRepository.findOne({ where: { userId: createCommentDto.userId } });
-      const post = await this.postRepository.findOne({ where: { postId: createCommentDto.postId } });
-      const comment = this.commentRepository.create({ ...createCommentDto, userId: user.userId, postId: post.postId } as DeepPartial<Comment>);
-      return this.commentRepository.save(comment);
-    }
+
+
 }
