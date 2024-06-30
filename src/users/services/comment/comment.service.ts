@@ -64,7 +64,9 @@ export class CommentService {
         throw new NotFoundException('Parent comment not found');
       }
 
-
+      if (!replyData.user) {
+        throw new Error('User not provided for reply comment');
+      }
       const replyComment = this.commentRepository.create({
         content: replyData.content,
         user: replyData.user,
