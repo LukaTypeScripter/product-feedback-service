@@ -42,11 +42,48 @@ export class AuthService {
         return this.userRepository.save(newUser);
     }
 
-  async getAllUser(): Promise<User[]> {
-    return this.userRepository.find({
-      select: ['userId', 'username', 'image'],
-      relations: ['posts', 'posts.comments',],
-    });
+  async getAllUser(category?: string, sort?: string): Promise<User[]> {
+    const query = this.userRepository.createQueryBuilder('user')
+      .leftJoinAndSelect('user.posts', 'post')
+      .leftJoinAndSelect('post.comments', 'comment')
+      .leftJoinAndSelect('comment.replies', 'reply')
+      .select([
+        'user.userId',
+        'user.username',
+        'user.image',
+        'post',
+        'comment.id',
+        'comment.content',
+        'comment.user',
+        'reply.id',
+        'reply.content',
+        'reply.user',
+      ]);
+
+    if (category && category !== 'all') {
+      query.where('post.category = :category', { category });
+    }
+
+    if (sort) {
+      switch (sort) {
+        case 'most-upvotes':
+          query.orderBy('post.upvotes', 'DESC');
+          break;
+        case 'least-upvotes':
+          query.orderBy('post.upvotes', 'ASC');
+          break;
+        case 'most-comments':
+          query.orderBy('post.commentCount', 'DESC');
+          break;
+        case 'least-comments':
+          query.orderBy('post.commentCount', 'ASC');
+          break;
+        default:
+          break;
+      }
+    }
+
+    return query.getMany();
   }
     async encryptPassword(password: string): Promise<string> {
         const saltRounds = 10;

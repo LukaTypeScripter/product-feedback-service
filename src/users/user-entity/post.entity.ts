@@ -25,6 +25,9 @@ export class Post {
   @Column({ default: 'suggestion' })
   status: string;
 
+  @Column({ default: 0 })
+  commentCount: number;
+
   @Column()
   description: string;
 

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, UseGuards,  Request } from '@nestjs/common';
+import { Controller, Get, UseGuards, Request, Query } from "@nestjs/common";
 import { Body,  Post, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
@@ -26,9 +26,7 @@ export class AuthController {
       return this.authService.createUser(userData);
     }
     @Get('allUser')
-    async getAllUser() {
-      return this.authService.getAllUser()
+    async getAllUser(@Query('category') category?: string,@Query('sort') sort?: string) {
+      return this.authService.getAllUser(category,sort)
     }
-
-    
 }
