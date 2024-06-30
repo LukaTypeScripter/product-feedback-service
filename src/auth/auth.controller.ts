@@ -25,6 +25,7 @@ export class AuthController {
     async register(@Body() userData: User) {
       return this.authService.createUser(userData);
     }
+
     @Get('allUser')
     async getAllUser(@Query('category') category?: string,@Query('sort') sort?: string) {
       return this.authService.getAllUser(category,sort)

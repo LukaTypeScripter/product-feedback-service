@@ -1,10 +1,10 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { FindOneOptions, Repository } from "typeorm";
-import { Post } from "../../user-entity/post.entity";
-import { UserEntity } from "../../user.entity";
-import { CreateCommentDto } from "../../user-entity/dtos/entity.dto";
-import { Comment } from "../../user-entity/comment.entity";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
+import { Post } from '../../user-entity/post.entity';
+import { UserEntity } from '../../user.entity';
+import { CreateCommentDto } from '../../user-entity/dtos/entity.dto';
+import { Comment } from '../../user-entity/comment.entity';
 
 @Injectable()
 export class CommentService {
@@ -15,8 +15,7 @@ export class CommentService {
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
-  ) {
-  }
+  ) {}
 
   async createComment(createCommentDto: CreateCommentDto): Promise<Comment> {
     const user = await this.userRepository.findOne({
