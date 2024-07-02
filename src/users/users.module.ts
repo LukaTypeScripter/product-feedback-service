@@ -10,8 +10,6 @@ import { Comment } from './user-entity/comment.entity';
 import { PostService } from "./services/post/post.service";
 import { CommentService } from "./services/comment/comment.service";
 import { UploadController } from "./upload/upload.controller";
-import { MulterModule } from "@nestjs/platform-express";
-import { diskStorage } from "multer";
 import { CustomMulterModule } from "../custom-multer.module";
 @Module({
   providers: [UsersService,PostService,CommentService],
