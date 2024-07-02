@@ -12,6 +12,7 @@ import { CommentService } from "./services/comment/comment.service";
 import { UploadController } from "./upload/upload.controller";
 import { MulterModule } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
+import { CustomMulterModule } from "../custom-multer.module";
 @Module({
   providers: [UsersService,PostService,CommentService],
   controllers: [CommentController,PostController,UploadController],
@@ -19,15 +20,7 @@ import { diskStorage } from "multer";
   // eslint-disable-next-line prettier/prettier
   imports:[
     TypeOrmModule.forFeature([UserEntity,Post,Comment]),
-    MulterModule.register({
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (req, file, cb) => {
-          const filename = `${Date.now()}-${file.originalname}`;
-          cb(null, filename);
-        },
-      }),
-    }),
+    CustomMulterModule
   ],
 })
 export class UsersModule {}

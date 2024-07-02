@@ -9,6 +9,7 @@ import { UserEntity } from '../users/user.entity';
 import { ConfigModule } from '@nestjs/config';
 import { MulterModule } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
+import { CustomMulterModule } from "../custom-multer.module";
 
 @Module({
   controllers: [AuthController],
@@ -21,15 +22,7 @@ import { diskStorage } from "multer";
       secret: process.env.JWT_KEY,
       signOptions: { expiresIn: '60s' },
     }),
-    MulterModule.register({
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (req, file, cb) => {
-          const filename = `${Date.now()}-${file.originalname}`;
-          cb(null, filename);
-        },
-      }),
-    }),
+    CustomMulterModule
   ],
   
 })
