@@ -15,4 +15,9 @@ export class CommentController {
     console.log(parentCommentId)
     return this.commentService.addReply(parentCommentId, replyData);
   }
+
+  @Post(':parentCommentId/:userId/upvote')
+  async addUpvote(@Param('parentCommentId') parentCommentId: number, @Param('userId') userId: number) {
+    return this.commentService.onAddUpvoteComment(parentCommentId, userId);
+  }
 }

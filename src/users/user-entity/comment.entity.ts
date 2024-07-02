@@ -22,6 +22,12 @@ export class Comment {
   @ManyToOne(() => Comment, parent => parent.replies)
   parentComment: Comment;
 
+  @Column({ default: 0 })
+  upvotes: number;
+
+  @Column({ default: false })
+  upvoted: boolean;
+
   @OneToMany(() => Comment, reply => reply.parentComment)
   replies: Comment[];
 }

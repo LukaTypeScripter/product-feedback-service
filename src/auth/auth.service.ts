@@ -55,9 +55,13 @@ export class AuthService {
         'comment.id',
         'comment.content',
         'comment.user',
+        'comment.upvotes',
+        'comment.upvoted',
         'reply.id',
         'reply.content',
         'reply.user',
+        "reply.upvotes",
+        "reply.upvoted"
       ]);
 
     if (category && category !== 'all') {

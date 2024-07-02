@@ -83,4 +83,43 @@ export class CommentService {
       throw error;
     }
   }
+
+  async onAddUpvoteComment(
+    commentId: number,
+    userId:number
+  ) {
+    try {
+      const comment = await this.commentRepository.findOne({
+        where: { id: commentId },
+        relations: ['replies', 'user'],
+      });
+      if (!comment) {
+        throw new NotFoundException('Comment not found');
+      }
+      const user = await this.userRepository.findOne({
+        where: { userId: userId },
+      });
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+      if (!comment) {
+        throw new NotFoundException('user comment not found');
+      }
+      if (!comment.upvotes) {
+        comment.upvotes = 0;
+      }
+      if (comment.upvoted) {
+        comment.upvotes -= 1;
+      } else {
+        comment.upvotes += 1;
+      }
+      return this.commentRepository.save(comment);
+    } catch (err) {
+      console.error('Error while adding reply comment:', err.message);
+      throw err;
+    }
+  }
+
+
+
 }
