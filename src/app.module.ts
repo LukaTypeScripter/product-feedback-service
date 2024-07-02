@@ -8,6 +8,8 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { PostController } from './users/post/post.controller';
 import { CommentController } from './users/comment/comment.controller';
+import { diskStorage } from "multer";
+import { MulterModule } from "@nestjs/platform-express";
 
 
 @Module({
@@ -19,6 +21,7 @@ import { CommentController } from './users/comment/comment.controller';
       autoLoadEntities: true,
       synchronize: true, 
     }),
+
     AuthModule,
     UsersModule,
   ],

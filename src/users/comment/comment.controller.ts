@@ -20,4 +20,5 @@ export class CommentController {
   async addUpvote(@Param('parentCommentId') parentCommentId: number, @Param('userId') userId: number) {
     return this.commentService.onAddUpvoteComment(parentCommentId, userId);
   }
+
 }
