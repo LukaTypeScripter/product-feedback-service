@@ -1,10 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Body, Injectable, NotFoundException, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, Repository } from 'typeorm';
 import { Post } from '../../user-entity/post.entity';
 import { UserEntity } from '../../user.entity';
 import { CreateCommentDto } from '../../user-entity/dtos/entity.dto';
 import { Comment } from '../../user-entity/comment.entity';
+import { FileInterceptor } from "@nestjs/platform-express";
 
 @Injectable()
 export class CommentService {

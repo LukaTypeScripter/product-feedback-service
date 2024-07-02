@@ -7,6 +7,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '../users/user.entity';
 import { ConfigModule } from '@nestjs/config';
+import { MulterModule } from "@nestjs/platform-express";
+import { diskStorage } from "multer";
 
 @Module({
   controllers: [AuthController],
@@ -18,6 +20,15 @@ import { ConfigModule } from '@nestjs/config';
       global: true,
       secret: process.env.JWT_KEY,
       signOptions: { expiresIn: '60s' },
+    }),
+    MulterModule.register({
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          const filename = `${Date.now()}-${file.originalname}`;
+          cb(null, filename);
+        },
+      }),
     }),
   ],
   

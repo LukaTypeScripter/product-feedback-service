@@ -23,4 +23,6 @@ export class PostController {
   removeSpecificPost(@Param('postId') postId: number) {
     return this.postService.removeSpecificPost(postId);
   }
+
+
 }

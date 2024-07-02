@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Body, Injectable, Param, UnauthorizedException, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User, UsersService } from 'src/users/users.service';
@@ -9,6 +9,7 @@ import * as bcrypt from 'bcrypt';
 import { CreateCommentDto, CreatePostDto } from 'src/users/user-entity/dtos/entity.dto';
 import { Comment } from 'src/users/user-entity/comment.entity';
 import { Post } from 'src/users/user-entity/post.entity';
+import { FileInterceptor } from "@nestjs/platform-express";
 @Injectable()
 export class AuthService {
     constructor(
@@ -94,4 +95,25 @@ export class AuthService {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         return hashedPassword;
     }
+
+  async uploadImage(file:any, userId:any) {
+    try {
+      const user = await this.userRepository.findOne({ where: { userId: parseInt(userId, 10) } });
+      console.log(user,"123");
+      if (!user) {
+        throw new Error(`User with ID ${userId} not found`);
+      }
+      user.image = file.filename;
+      console.log(file.filename)
+      await this.userRepository.save(user);
+      return {
+        message: 'Image uploaded successfully',
+        filename: file.filename,
+        user: user,
+      };
+    } catch (error) {
+      console.error('Error uploading image:', error.message);
+      throw new Error('Failed to upload image');
+    }
+  }
 }
