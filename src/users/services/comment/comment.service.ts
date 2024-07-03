@@ -52,6 +52,7 @@ export class CommentService {
     parentCommentId: number,
     replyData: Partial<Comment>,
   ): Promise<Comment> {
+
     const options: FindOneOptions<Comment> = {
       where: { id: parentCommentId },
       relations: ['replies', 'user'],
@@ -60,6 +61,11 @@ export class CommentService {
     try {
       const parentComment = await this.commentRepository.findOne(options);
 
+      const user = await this.userRepository.findOne({ where: { username: replyData.user as string } });
+
+      if(!user) {
+        throw new NotFoundException('User not found');
+      }
       if (!parentComment) {
         throw new NotFoundException('Parent comment not found');
       }
@@ -69,10 +75,9 @@ export class CommentService {
       }
       const replyComment = this.commentRepository.create({
         content: replyData.content,
-        user: replyData.user,
+        user: user,
         parentComment: parentComment,
       });
-
       const savedReply = await this.commentRepository.save(replyComment);
 
       parentComment.replies.push(savedReply);

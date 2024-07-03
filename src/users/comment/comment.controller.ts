@@ -12,7 +12,6 @@ export class CommentController {
   }
   @Post(':parentCommentId/reply')
   async addReply(@Param('parentCommentId') parentCommentId: number, @Body() replyData: Partial<any>) {
-    console.log(parentCommentId)
     return this.commentService.addReply(parentCommentId, replyData);
   }
 

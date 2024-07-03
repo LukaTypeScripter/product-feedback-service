@@ -61,8 +61,9 @@ export class AuthService {
         'reply.id',
         'reply.content',
         'reply.user',
-        "reply.upvotes",
-        "reply.upvoted"
+        'reply.upvotes',
+        'reply.upvoted',
+        "reply.parentComment"
       ]);
 
     if (category && category !== 'all') {
@@ -99,7 +100,6 @@ export class AuthService {
   async uploadImage(file:any, userId:any) {
     try {
       const user = await this.userRepository.findOne({ where: { userId: parseInt(userId, 10) } });
-      console.log(user,"123");
       if (!user) {
         throw new Error(`User with ID ${userId} not found`);
       }
